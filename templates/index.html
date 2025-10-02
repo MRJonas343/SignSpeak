@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignSpeak - Traductor de Lengua de Señas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 30px;
+            gap: 30px;
+        }
+
+        .video-section {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .video-container {
+            position: relative;
+            background: #000;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        #video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .text-section {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .recognized-text {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            min-height: 200px;
+            border: 2px solid #e9ecef;
+        }
+
+        .recognized-text h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .text-display {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            min-height: 120px;
+            font-size: 2em;
+            color: #333;
+            word-wrap: break-word;
+            border: 2px dashed #667eea;
+        }
+
+        .text-display.empty {
+            color: #adb5bd;
+            font-style: italic;
+            font-size: 1.2em;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 150px;
+        }
+
+        .btn-reset {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-reset:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
+        }
+
+        .info-section {
+            background: #e7f3ff;
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .info-section h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .info-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .info-section li {
+            padding: 8px 0;
+            color: #495057;
+        }
+
+        .info-section li:before {
+            content: "👆 ";
+            margin-right: 8px;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #28a745;
+            margin-left: 10px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .main-content {
+                padding: 15px;
+            }
+
+            .text-display {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🤟 SignSpeak</h1>
+            <p>Traductor de Lengua de Señas a Texto con IA</p>
+        </header>
+
+        <div class="main-content">
+            <div class="video-section">
+                <div class="video-container">
+                    <img id="video" src="{{ url_for('video_feed') }}" alt="Video Feed">
+                </div>
+            </div>
+
+            <div class="text-section">
+                <div class="recognized-text">
+                    <h2>Texto Reconocido <span class="status-indicator"></span></h2>
+                    <div id="textDisplay" class="text-display empty">
+                        Esperando señas...
+                    </div>
+                </div>
+
+                <div class="controls">
+                    <button class="btn btn-reset" onclick="resetText()">🔄 Limpiar Texto</button>
+                </div>
+
+                <div class="info-section">
+                    <h3>Señas Reconocidas:</h3>
+                    <ul>
+                        <li><strong>A</strong> - Puño cerrado</li>
+                        <li><strong>B</strong> - Mano abierta (5 dedos)</li>
+                        <li><strong>D</strong> - Solo dedo índice</li>
+                        <li><strong>V</strong> - Índice y medio (paz/victoria)</li>
+                        <li><strong>W</strong> - Índice, medio y anular</li>
+                        <li><strong>👍</strong> - Pulgar arriba</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let recognizedText = "";
+
+        // Update recognized text every second
+        setInterval(async () => {
+            try {
+                const response = await fetch('/get_text');
+                const data = await response.json();
+                
+                if (data.text && data.text !== recognizedText) {
+                    recognizedText = data.text;
+                    updateDisplay();
+                }
+            } catch (error) {
+                console.error('Error fetching text:', error);
+            }
+        }, 1000);
+
+        function updateDisplay() {
+            const display = document.getElementById('textDisplay');
+            if (recognizedText) {
+                display.textContent = recognizedText;
+                display.classList.remove('empty');
+            } else {
+                display.textContent = 'Esperando señas...';
+                display.classList.add('empty');
+            }
+        }
+
+        async function resetText() {
+            try {
+                await fetch('/reset');
+                recognizedText = "";
+                updateDisplay();
+            } catch (error) {
+                console.error('Error resetting text:', error);
+            }
+        }
+    </script>
+</body>
+</html>
