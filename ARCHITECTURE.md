@@ -29,7 +29,7 @@ SignSpeak es una aplicación web que traduce lengua de señas a texto en tiempo 
                   │                       │
                   ▼                       ▼
 ┌─────────────────────────────────────────────────────────────┐
-│                    Backend Flask (app.py)                    │
+│                    Backend FastAPI (app.py)                  │
 │  ┌──────────────────────────────────────────────────────┐  │
 │  │              Rutas / Endpoints                        │  │
 │  │  - / (index)         → Renderiza página principal    │  │
@@ -85,7 +85,7 @@ SignSpeak es una aplicación web que traduce lengua de señas a texto en tiempo 
 ### 1. Inicialización
 ```
 Usuario inicia app.py
-  → Flask server inicia en puerto 5000
+  → Uvicorn server con FastAPI inicia en puerto 5000
   → MediaPipe Hands se inicializa
   → Variables globales se configuran
 ```
@@ -93,7 +93,7 @@ Usuario inicia app.py
 ### 2. Carga de Página
 ```
 Usuario abre http://localhost:5000
-  → Flask sirve templates/index.html
+  → FastAPI sirve templates/index.html usando Jinja2Templates
   → Browser renderiza interfaz
   → JavaScript inicia polling cada 1 segundo
   → <img> tag solicita video stream
@@ -138,10 +138,11 @@ Usuario hace clic en "Limpiar Texto"
 
 ## Componentes Técnicos
 
-### Backend (Python/Flask)
+### Backend (Python/FastAPI)
 
 #### Librerías Principales
-- **Flask**: Framework web ligero
+- **FastAPI**: Framework web moderno y rápido
+- **Uvicorn**: Servidor ASGI para FastAPI
 - **OpenCV (cv2)**: Captura y procesamiento de video
 - **MediaPipe**: Detección de manos y landmarks
 - **NumPy**: Operaciones numéricas (uso indirecto)
@@ -272,7 +273,10 @@ Esto previene:
 ## Dependencias y Versiones
 
 ```
-Flask==3.0.0          → Web framework
+fastapi==0.104.1      → Web framework
+uvicorn==0.24.0       → ASGI server
+python-multipart==0.0.6 → Form parsing
+jinja2==3.1.2         → Template engine
 opencv-python==4.8.1  → Computer vision
 mediapipe==0.10.21    → Hand tracking
 numpy==1.24.3         → Operaciones numéricas
@@ -300,7 +304,7 @@ numpy==1.24.3         → Operaciones numéricas
 - Verificación de sintaxis Python
 
 ### Pruebas Recomendadas
-- Integration tests para endpoints Flask
+- Integration tests para endpoints FastAPI
 - Tests de carga para streaming
 - Tests de UI con Selenium
 - Tests de precisión con dataset de gestos
@@ -314,7 +318,7 @@ python app.py
 
 ### Producción (Recomendado)
 ```bash
-gunicorn -w 4 -b 0.0.0.0:5000 app:app
+uvicorn app:app --host 0.0.0.0 --port 5000 --workers 4
 ```
 
 Con:
@@ -343,5 +347,5 @@ Con:
 ## Referencias
 
 - [MediaPipe Hands Documentation](https://google.github.io/mediapipe/solutions/hands.html)
-- [Flask Documentation](https://flask.palletsprojects.com/)
+- [FastAPI Documentation](https://fastapi.tiangolo.com/)
 - [OpenCV Python Tutorials](https://docs.opencv.org/master/d6/d00/tutorial_py_root.html)

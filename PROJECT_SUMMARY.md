@@ -7,9 +7,9 @@
 
 ### Componentes Principales
 
-#### 1. Backend (Python/Flask)
+#### 1. Backend (Python/FastAPI)
 - **app.py** (4.8 KB)
-  - Servidor Flask con streaming de video
+  - Servidor FastAPI con streaming de video
   - Integración con MediaPipe Hands
   - Algoritmo de reconocimiento de gestos
   - API REST para frontend
@@ -27,7 +27,10 @@
 #### 3. Configuración
 - **.gitignore** - Exclusión de archivos innecesarios
 - **requirements.txt** - Dependencias del proyecto
-  - Flask 3.0.0
+  - fastapi 0.104.1
+  - uvicorn 0.24.0
+  - python-multipart 0.0.6
+  - jinja2 3.1.2
   - opencv-python 4.8.1.78
   - mediapipe 0.10.21
   - numpy 1.24.3
@@ -154,7 +157,8 @@
 
 ### Backend
 - **Python 3.8+** - Lenguaje principal
-- **Flask 3.0** - Web framework
+- **FastAPI 0.104** - Web framework
+- **Uvicorn 0.24** - ASGI server
 - **OpenCV 4.8** - Procesamiento de video
 - **MediaPipe 0.10** - Hand tracking
 - **NumPy 1.24** - Operaciones numéricas
@@ -206,7 +210,7 @@
    - Conversión de gesto a texto
    - Display dinámico en UI
 
-4. ✅ **Interfaz de usuario simple (Flask)**
+4. ✅ **Interfaz de usuario simple (FastAPI)**
    - Video en vivo
    - Texto reconocido en tiempo real
    - Botón de reset
@@ -219,7 +223,7 @@
    - Modelo básico implementado
 
 2. ✅ **Frontend/UI**
-   - Flask para web server
+   - FastAPI para web server
    - HTML + JS para interfaz
 
 #### Alcance MVP
@@ -256,7 +260,7 @@ SignSpeak/
 ├── requirements.txt       # Dependencias Python
 ├── start.sh              # Script inicio Linux/Mac
 ├── start.bat             # Script inicio Windows
-├── app.py                # Backend Flask
+├── app.py                # Backend FastAPI
 ├── test_gesture_logic.py # Tests unitarios
 └── templates/
     └── index.html        # Frontend UI
