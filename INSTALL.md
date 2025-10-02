@@ -127,7 +127,7 @@ Abre tu navegador y ve a:
 
 ### Error "ModuleNotFoundError"
 
-Si ves errores como `ModuleNotFoundError: No module named 'flask'`:
+Si ves errores como `ModuleNotFoundError: No module named 'fastapi'` o `'uvicorn'`:
 - Asegúrate de que el entorno virtual esté activado
 - Reinstala las dependencias: `pip install -r requirements.txt`
 
