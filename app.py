@@ -1,11 +1,15 @@
-from flask import Flask, render_template, Response, jsonify
+from fastapi import FastAPI, Request
+from fastapi.responses import StreamingResponse, JSONResponse, HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 import cv2
 import mediapipe as mp
 import numpy as np
 from collections import deque
 import time
 
-app = Flask(__name__)
+app = FastAPI()
+templates = Jinja2Templates(directory="templates")
 
 # Initialize MediaPipe Hands
 mp_hands = mp.solutions.hands
@@ -130,29 +134,30 @@ def generate_frames():
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
-@app.route('/')
-def index():
+@app.get('/', response_class=HTMLResponse)
+async def index(request: Request):
     """Render main page"""
-    return render_template('index.html')
+    return templates.TemplateResponse("index.html", {"request": request})
 
-@app.route('/video_feed')
-def video_feed():
+@app.get('/video_feed')
+async def video_feed():
     """Video streaming route"""
-    return Response(generate_frames(),
-                   mimetype='multipart/x-mixed-replace; boundary=frame')
+    return StreamingResponse(generate_frames(),
+                           media_type='multipart/x-mixed-replace; boundary=frame')
 
-@app.route('/get_text')
-def get_text():
+@app.get('/get_text')
+async def get_text():
     """Get recognized text"""
-    return jsonify({'text': last_gesture})
+    return JSONResponse({'text': last_gesture})
 
-@app.route('/reset')
-def reset():
+@app.get('/reset')
+async def reset():
     """Reset recognized text"""
     global last_gesture, gesture_buffer
     last_gesture = ""
     gesture_buffer.clear()
-    return jsonify({'status': 'ok'})
+    return JSONResponse({'status': 'ok'})
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    import uvicorn
+    uvicorn.run(app, host='0.0.0.0', port=5000)

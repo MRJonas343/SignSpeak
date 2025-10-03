@@ -385,14 +385,14 @@ Cuando revisas PRs de otros:
 
 - [Git Basics](https://git-scm.com/book/en/v2/Getting-Started-Git-Basics)
 - [Python Style Guide (PEP 8)](https://www.python.org/dev/peps/pep-0008/)
-- [Flask Documentation](https://flask.palletsprojects.com/)
+- [FastAPI Documentation](https://fastapi.tiangolo.com/)
 - [MediaPipe Hands](https://google.github.io/mediapipe/solutions/hands.html)
 
 ### Para Issues Específicos
 
 - OpenCV: https://docs.opencv.org/
 - MediaPipe: https://google.github.io/mediapipe/
-- Flask: https://flask.palletsprojects.com/
+- FastAPI: https://fastapi.tiangolo.com/
 - HTML/CSS: https://developer.mozilla.org/
 
 ## ❓ Preguntas

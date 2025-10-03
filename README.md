@@ -17,13 +17,13 @@ SignSpeak es una aplicación web MVP que utiliza visión por computadora e intel
   - V - Índice y medio (paz/victoria)
   - W - Índice, medio y anular
   - 👍 - Pulgar arriba
-- **Interfaz web simple y responsive** con Flask
+- **Interfaz web simple y responsive** con FastAPI
 - **Traducción en tiempo real** mostrada en pantalla
 - **Función de reseteo** para limpiar el texto reconocido
 
 ## 🛠️ Tecnologías
 
-- **Backend**: Python 3.8+, Flask
+- **Backend**: Python 3.8+, FastAPI, Uvicorn
 - **IA/ML**: MediaPipe, OpenCV
 - **Frontend**: HTML5, CSS3, JavaScript
 

@@ -74,7 +74,10 @@ Si tienes problemas de timeout, intenta:
 pip install --timeout 120 -r requirements.txt
 
 # O instalar una por una
-pip install Flask
+pip install fastapi
+pip install uvicorn[standard]
+pip install python-multipart
+pip install jinja2
 pip install opencv-python
 pip install mediapipe
 pip install numpy
@@ -83,7 +86,7 @@ pip install numpy
 ### 4. Verificar Instalación
 
 ```bash
-python -c "import flask; import cv2; import mediapipe; print('✓ Todas las dependencias instaladas correctamente')"
+python -c "import fastapi; import uvicorn; import cv2; import mediapipe; print('✓ Todas las dependencias instaladas correctamente')"
 ```
 
 ## Ejecución
@@ -124,7 +127,7 @@ Abre tu navegador y ve a:
 
 ### Error "ModuleNotFoundError"
 
-Si ves errores como `ModuleNotFoundError: No module named 'flask'`:
+Si ves errores como `ModuleNotFoundError: No module named 'fastapi'` o `'uvicorn'`:
 - Asegúrate de que el entorno virtual esté activado
 - Reinstala las dependencias: `pip install -r requirements.txt`
 
