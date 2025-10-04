@@ -47,3 +47,6 @@ instance/
 *.pth
 models/
 !models/.gitkeep
+
+# Vercel
+.vercel
